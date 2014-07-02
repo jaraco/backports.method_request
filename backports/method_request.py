@@ -13,6 +13,43 @@ class Request(request.Request):
 		`urllib.request.Request` except it also takes an optional `method`
 		keyword argument. If supplied, `method` will be used instead of
 		the default.
+
+		>>> req = Request('http://example.com')
+		>>> req.get_method()
+		'GET'
+
+		>>> req.method = 'POST'
+		>>> req.get_method()
+		'POST'
+
+		Passing None is the same as not passing a value.
+
+		>>> req = Request('http://example.com', method=None)
+		>>> req.get_method()
+		'GET'
+
+		>>> req = Request('http://example.com', data='xxx')
+		>>> req.get_method()
+		'POST'
+
+		>>> req = Request('http://example.com', method='PUT')
+		>>> req.get_method()
+		'PUT'
+
+		Removing the attribute resets the behavior.
+		>>> del req.method
+		>>> req.get_method()
+		'GET'
+
+		>>> class SpecialRequest(Request):
+		...     method = 'SPECIAL'
+		>>> req = SpecialRequest('http://example.com')
+		>>> req.get_method()
+		'SPECIAL'
+
+		>>> req = SpecialRequest('http://example.com', method='PATCH')
+		>>> req.get_method()
+		'PATCH'
 		"""
 		method = kwargs.pop('method', self.method)
 		request.Request.__init__(self, *args, **kwargs)
