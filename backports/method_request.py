@@ -1,3 +1,5 @@
+import sys
+
 try:
 	import urllib.request as request
 except ImportError:
@@ -5,7 +7,8 @@ except ImportError:
 	import urllib2 as request
 
 class Request(request.Request):
-	method = None
+	if (3, 3) < sys.version_info < (3, 4):
+		method = None
 
 	def __init__(self, *args, **kwargs):
 		"""
@@ -51,10 +54,12 @@ class Request(request.Request):
 		>>> req.get_method()
 		'PATCH'
 		"""
-		method = kwargs.pop('method', self.method)
+		method = kwargs.pop('method', None)
 		request.Request.__init__(self, *args, **kwargs)
-		# write the method after __init__ as Python 3.3 overrides the value
-		self.method = method
+		# On Python 3.3, remove the None attribute
+		vars(self).pop('method', None)
+		if method:
+			self.method = method
 
 	def get_method(self):
-		return getattr(self, 'method') or request.Request.get_method(self)
+		return getattr(self, 'method', None) or request.Request.get_method(self)
