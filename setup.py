@@ -3,20 +3,16 @@
 # Project skeleton maintained at https://github.com/jaraco/skeleton
 
 import io
-import sys
 
 import setuptools
 
 with io.open('README.rst', encoding='utf-8') as readme:
 	long_description = readme.read()
 
-needs_wheel = set(['release', 'bdist_wheel', 'dists']).intersection(sys.argv)
-wheel = ['wheel'] if needs_wheel else []
-
 name = 'backports.method_request'
 description = ''
 
-setup_params = dict(
+params = dict(
 	name=name,
 	use_scm_version=True,
 	author="Jason R. Coombs",
@@ -26,14 +22,23 @@ setup_params = dict(
 	url="https://github.com/jaraco/" + name,
 	packages=setuptools.find_packages(),
 	include_package_data=True,
-	namespace_packages=name.split('.')[:-1],
+	python_requires='>=2.6',
 	install_requires=[
 	],
 	extras_require={
+		'testing': [
+			'pytest>=2.8',
+			'pytest-sugar',
+		],
+		'docs': [
+			'sphinx',
+			'jaraco.packaging>=3.2',
+			'rst.linker>=1.9',
+		],
 	},
 	setup_requires=[
-		'setuptools_scm>=1.9,!=1.13.1,!=1.14.0',
-	] + wheel,
+		'setuptools_scm>=1.15.0',
+	],
 	classifiers=[
 		"Development Status :: 5 - Production/Stable",
 		"Intended Audience :: Developers",
@@ -46,4 +51,4 @@ setup_params = dict(
 	},
 )
 if __name__ == '__main__':
-	setuptools.setup(**setup_params)
+	setuptools.setup(**params)

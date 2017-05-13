@@ -16,6 +16,10 @@ See `Python 18978 <http://bugs.python.org/issue18978>`_ for details.
 
 Works on Python 2.6 and later.
 
+
+License
+=======
+
 License is indicated in the project metadata (typically one or more
 of the Trove classifiers). For more details, see `this explanation
 <https://github.com/jaraco/skeleton/issues/1>`_.
